@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра: ТЦК</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .game-title {
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        
+        .letter-button {
+            flex: 1;
+            height: 80px;
+            font-size: 32px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .letter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .letter-button:active {
+            transform: translateY(1px);
+        }
+        
+        #button-t {
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+        }
+        
+        #button-c {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        #button-k {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        .action-button {
+            width: 100%;
+            height: 70px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        #button-call {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        #button-che {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .status-bar {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        .selected-text {
+            font-weight: bold;
+            color: #2c3e50;
+            min-height: 24px;
+            margin: 10px 0;
+        }
+        
+        .counter {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 10px;
+        }
+        
+        .counter-item {
+            text-align: center;
+        }
+        
+        .counter-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .counter-label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .history {
+            margin-top: 20px;
+            max-height: 100px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .dark-mode .app-container {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .dark-mode .status-bar,
+        .dark-mode .history {
+            background: #34495e;
+            color: white;
+        }
+        
+        .dark-mode .counter {
+            background: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 class="game-title">🎮 ИГРА: ТЦК 🎮</h1>
+        
+        <!-- 1 ряд: Т, Ц, К -->
+        <div class="button-row">
+            <button class="letter-button" id="button-t" onclick="pressButton('Т')">Т</button>
+            <button class="letter-button" id="button-c" onclick="pressButton('Ц')">Ц</button>
+            <button class="letter-button" id="button-k" onclick="pressButton('К')">К</button>
+        </div>
+        
+        <!-- 2 ряд: Вызов -->
+        <button class="action-button" id="button-call" onclick="callFunction()">📞 ВЫЗОВ</button>
+        
+        <!-- 3 ряд: Че -->
+        <button class="action-button" id="button-che" onclick="cheFunction()">❓ ЧЕ</button>
+        
+        <!-- Статус -->
+        <div class="selected-text" id="selected-text">
+            Нажмите любую кнопку
+        </div>
+        
+        <!-- Счетчики -->
+        <div class="counter">
+            <div class="counter-item">
+                <div class="counter-value" id="counter-t">0</div>
+                <div class="counter-label">Т</div>
+            </div>
+            <div class="counter-item">
+                <div class="counter-value" id="counter-c">0</div>
+                <div class="counter-label">Ц</div>
+            </div>
+            <div class="counter-item">
+                <div class="counter-value" id="counter-k">0</div>
+                <div class="counter-label">К</div>
+            </div>
+        </div>
+        
+        <!-- История нажатий -->
+        <div class="history" id="history">
+            История:<br>
+        </div>
+        
+        <div class="status-bar">
+            <div id="user-info">Загрузка...</div>
+            <button onclick="sendToTelegram()" style="margin-top: 10px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Отправить результат
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        
+        // Получаем данные пользователя
+        const user = tg.initDataUnsafe.user;
+        
+        // Инициализация приложения
+        let counters = { 'Т': 0, 'Ц': 0, 'К': 0 };
+        let history = [];
+        
+        // Инициализация
+        function initApp() {
+            // Растягиваем на весь экран
+            tg.expand();
+            
+            // Устанавливаем тему
+            if (tg.colorScheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Отображаем информацию о пользователе
+            if (user) {
+                document.getElementById('user-info').innerHTML = 
+                    `👤 Игрок: ${user.first_name || ''} ${user.last_name || ''}`;
+            }
+            
+            // Загружаем сохраненные данные (если есть)
+            loadData();
+            
+            // Настраиваем кнопку назад
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => {
+                tg.close();
+            });
+            
+            console.log('Telegram Mini App инициализирован');
+        }
+        
+        // Обработка нажатия буквенных кнопок
+        function pressButton(letter) {
+            // Обновляем счетчик
+            counters[letter]++;
+            document.getElementById(`counter-${letter.toLowerCase()}`).textContent = counters[letter];
+            
+            // Добавляем в историю
+            const time = new Date().toLocaleTimeString();
+            history.push(`${time}: ${letter}`);
+            
+            // Обновляем историю (последние 5 записей)
+            updateHistory();
+            
+            // Показываем выбранную букву
+            document.getElementById('selected-text').textContent = `Выбрано: ${letter}`;
+            
+            // Виброотклик (если поддерживается)
+            if (tg.isVibrationSupported) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            
+            // Сохраняем данные
+            saveData();
+            
+            // Отправляем событие в Telegram
+            tg.sendData(JSON.stringify({
+                type: "button_click",
+                button: letter,
+                timestamp: new Date().toISOString()
+            }));
+        }
+        
+        // Функция для кнопки "Вызов"
+        function callFunction() {
+            const randomLetter = ['Т', 'Ц', 'К'][Math.floor(Math.random() * 3)];
+            
+            tg.showPopup({
+                title: "🎲 Рандомный выбор",
+                message: `Выпала буква: ${randomLetter}`,
+                buttons: [{ type: "ok" }]
+            });
+            
+            // Добавляем вызов в историю
+            const time = new Date().toLocaleTimeString();
+            history.push(`${time}: ВЫЗОВ → ${randomLetter}`);
+            updateHistory();
+            
+            // Виброотклик
+            if (tg.isVibrationSupported) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+        
+        // Функция для кнопки "Че"
+        function cheFunction() {
+            // Показываем текущую статистику
+            const stats = `
+                📊 Статистика:
+                Т: ${counters['Т']} раз
+                Ц: ${counters['Ц']} раз
+                К: ${counters['К']} раз
+                Всего: ${counters['Т'] + counters['Ц'] + counters['К']} нажатий
+            `;
+            
+            tg.showAlert(stats);
+            
+            // Добавляем в историю
+            const time = new Date().toLocaleTimeString();
+            history.push(`${time}: ЧЕ (статистика)`);
+            updateHistory();
+        }
+        
+        // Обновление истории
+        function updateHistory() {
+            const historyElement = document.getElementById('history');
+            const recentHistory = history.slice(-5); // Последние 5 записей
+            historyElement.innerHTML = "История:<br>" + recentHistory.join("<br>");
+        }
+        
+        // Отправка результатов в Telegram
+        function sendToTelegram() {
+            const result = {
+                type: "game_result",
+                player: user?.first_name || "Аноним",
+                scores: counters,
+                total: counters['Т'] + counters['Ц'] + counters['К']
+            };
+            
+            tg.sendData(JSON.stringify(result));
+            
+            tg.showPopup({
+                title: "✅ Успешно!",
+                message: "Результаты отправлены",
+                buttons: [{ type: "ok" }]
+            });
+        }
+        
+        // Сохранение данных
+        function saveData() {
+            const data = {
+                counters: counters,
+                history: history.slice(-10) // Сохраняем последние 10 записей
+            };
+            localStorage.setItem('tck_game_data', JSON.stringify(data));
+        }
+        
+        // Загрузка данных
+        function loadData() {
+            const saved = localStorage.getItem('tck_game_data');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    counters = data.counters || counters;
+                    history = data.history || history;
+                    
+                    // Обновляем счетчики на экране
+                    document.getElementById('counter-t').textContent = counters['Т'];
+                    document.getElementById('counter-c').textContent = counters['Ц'];
+                    document.getElementById('counter-k').textContent = counters['К'];
+                    
+                    updateHistory();
+                } catch (e) {
+                    console.log('Ошибка загрузки данных:', e);
+                }
+            }
+        }
+        
+        // Обработчики событий Telegram
+        tg.onEvent('themeChanged', () => {
+            if (tg.colorScheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
+        
+        tg.onEvent('viewportChanged', () => {
+            console.log('Размер окна изменен');
+        });
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Предотвращаем закрытие с потерей данных
+        window.addEventListener('beforeunload', (e) => {
+            saveData();
+        });
+    </script>
+</body>
+</html>
