@@ -130,7 +130,136 @@
       font-weight: bold;  /* Жирный шрифт */
       margin-bottom: 40 px; /* Большой отступ снизу */
     }
-    
+
+      /* ================== ТАБЛО ДЛЯ БУКВ ================== */
+      .scoreboard {
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          border-radius: 15px;
+          padding: 15px;
+          margin-bottom: 25px;
+          border: 2px solid #dee2e6;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      }
+
+      .scoreboard-title {
+          font-size: 14px;
+          font-weight: bold;
+          color: #495057;
+          margin-bottom: 10px;
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .scoreboard-letters {
+          min-height: 60px;
+          background: white;
+          border-radius: 10px;
+          padding: 15px;
+          margin-bottom: 15px;
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          border: 2px dashed #ced4da;
+          word-break: break-all;
+      }
+
+          .scoreboard-letters .placeholder {
+              color: #adb5bd;
+              font-size: 16px;
+              font-weight: normal;
+          }
+
+      .letter-badge {
+          display: inline-block;
+          padding: 8px 15px;
+          background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+          color: white;
+          border-radius: 8px;
+          margin: 3px;
+          font-size: 20px;
+          min-width: 45px;
+          text-align: center;
+          box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+          animation: letterAppear 0.3s ease-out;
+      }
+
+      @keyframes letterAppear {
+          from {
+              transform: scale(0.8);
+              opacity: 0;
+          }
+
+          to {
+              transform: scale(1);
+              opacity: 1;
+          }
+      }
+
+      .letter-badge.t {
+          background: linear-gradient(135deg, #FF416C, #FF4B2B);
+      }
+
+      .letter-badge.c {
+          background: linear-gradient(135deg, #3498db, #2980b9);
+      }
+
+      .letter-badge.k {
+          background: linear-gradient(135deg, #2ecc71, #27ae60);
+      }
+
+      .scoreboard-controls {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+      }
+
+      .control-btn {
+          flex: 1;
+          padding: 10px;
+          background: #495057;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s;
+      }
+
+          .control-btn:hover {
+              background: #343a40;
+              transform: translateY(-2px);
+          }
+
+          .control-btn:active {
+              transform: translateY(0);
+          }
+
+      /* Для тёмной темы */
+      .dark-mode .scoreboard {
+          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+          border-color: #4a5568;
+      }
+
+      .dark-mode .scoreboard-title {
+          color: #e2e8f0;
+      }
+
+      .dark-mode .scoreboard-letters {
+          background: #1a202c;
+          border-color: #4a5568;
+          color: white;
+      }
+
+      .dark-mode .placeholder {
+          color: #718096;
+      }
+
     /* 
       📐 РЯД С КНОПКАМИ
       .button-row - контейнер для кнопок в один ряд
@@ -303,78 +432,81 @@
     📦 ГЛАВНЫЙ КОНТЕЙНЕР
     Все элементы приложения находятся внутри этого div
   -->
-  <div class="app-container">
-    <!-- 
+    <div class="app-container">
+        <!--
       🏷️ ЗАГОЛОВОК ИГРЫ
       h1 с классом game-title для градиентного текста
     -->
-      <h1 class="game-title">📞 ЗВОНИЛКА 📞</h1>
-    <!-- Эмодзи 🎮 добавляются как обычный текст -->
-    
-    <!-- 
+        <h1 class="game-title">📞 ЗВОНИЛКА 📞</h1>
+        <!-- Эмодзи 🎮 добавляются как обычный текст -->
+        <!-- ТАБЛО ДЛЯ ВВОДА БУКВ -->
+        <div class="scoreboard" id="scoreboard">
+            <div class="scoreboard-letters" id="scoreboard-letters">
+                <!-- Здесь будут появляться буквы -->
+        </div>
+        <!--
       📐 ПЕРВЫЙ РЯД: ТРИ КНОПКИ С БУКВАМИ
       button-row - контейнер для горизонтального расположения
     -->
-    <div class="button-row">
-      <!-- 
-        🔘 КНОПКА "Т"
-        class="letter-button" - общие стили для буквенных кнопок
-        id="button-t" - уникальный идентификатор (используется в CSS и JS)
-        onclick="pressButton('Т')" - вызов функции при клике
-        "Т" - текст на кнопке
-      -->
-      <button class="letter-button" id="button-t" onclick="pressButton('Т')">Т</button>
-      
-      <!-- 🔘 КНОПКА "Ц" -->
-      <button class="letter-button" id="button-c" onclick="pressButton('Ц')">Ц</button>
-      
-      <!-- 🔘 КНОПКА "К" -->
-      <button class="letter-button" id="button-k" onclick="pressButton('К')">К</button>
-    </div>
-    <!-- Конец первого ряда -->
-    
-    <!-- 
+        <div class="button-row">
+            <!--
+          🔘 КНОПКА "Т"
+          class="letter-button" - общие стили для буквенных кнопок
+          id="button-t" - уникальный идентификатор (используется в CSS и JS)
+          onclick="pressButton('Т')" - вызов функции при клике
+          "Т" - текст на кнопке
+        -->
+            <button class="letter-button" id="button-t" onclick="pressButton('Т')">Т</button>
+
+            <!-- 🔘 КНОПКА "Ц" -->
+            <button class="letter-button" id="button-c" onclick="pressButton('Ц')">Ц</button>
+
+            <!-- 🔘 КНОПКА "К" -->
+            <button class="letter-button" id="button-k" onclick="pressButton('К')">К</button>
+        </div>
+        <!-- Конец первого ряда -->
+        <!--
       📞 ВТОРОЙ РЯД: КНОПКА "ВЫЗОВ"
       class="action-button" - стиль для больших кнопок
       id="button-call" - уникальный идентификатор
       onclick="callFunction()" - функция при клике
     -->
-    <button class="action-button" id="button-call" onclick="callFunction()">
-        🤔 ВЫZOV  <!-- Эмодзи телефона + текст -->
-    </button>
-    
-    <!-- 
+        <button class="action-button" id="button-call" onclick="callFunction()">
+            🤔 ВЫZOV  <!-- Эмодзи телефона + текст -->
+        </button>
+
+        <!--
       ❓ ТРЕТИЙ РЯД: КНОПКА "ЧЕ"
       class="action-button" - тот же стиль, что у "Вызов"
       onclick="cheFunction()" - своя функция при клике
     -->
-    <button class="action-button" id="button-che" onclick="cheFunction()">
-      ❓ ЧЕ  <!-- Эмодзи вопроса + текст -->
-    </button>
-    
-   
-    <!-- 
+        <button class="action-button" id="button-che" onclick="cheFunction()">
+            ❓ ЧЕ  <!-- Эмодзи вопроса + текст -->
+        </button>
+
+
+        <!--
       📜 БЛОК ИСТОРИИ ДЕЙСТВИЙ
       Изначально содержит только заголовок "История:"
       JavaScript будет добавлять сюда записи о действиях
     -->
-    <div class="history" id="history">
-      История:<br>
-      <!-- <br> - перенос строки (как Enter) -->
-      <!-- Сюда будут добавляться записи через JavaScript -->
-    </div>
-    
-    <!-- 
+        <div class="history" id="history">
+            История:<br>
+            <!-- <br> - перенос строки (как Enter) -->
+            <!-- Сюда будут добавляться записи через JavaScript -->
+        </div>
+
+        <!--
       👤 ПАНЕЛЬ СТАТУСА (информация о пользователе Telegram)
       Будет заполняться JavaScript'ом при загрузке
     -->
-    <div class="status-bar">
-      <!-- Этот div будет заполнен информацией о пользователе -->
-      <div id="user-info">Загрузка данных пользователя...</div>
-      
-     
+        <div class="status-bar">
+            <!-- Этот div будет заполнен информацией о пользователе -->
+            <div id="user-info">Загрузка данных пользователя...</div>
+
+
+        </div>
     </div>
-  </div>
   <!-- Конец главного контейнера .app-container -->
 
   <script>
@@ -411,7 +543,10 @@
     let history = [];
     // [] - пустой массив (список)
     // Будем добавлять сюда строки с описанием действий
-    
+
+    // Для табло
+    let letterSequence = [];  // Массив для хранения последовательности букв
+    const MAX_LETTERS = 20;   // Максимальное количество букв в табло
     // 
     // 🎯 ОСНОВНЫЕ ФУНКЦИИ ДЛЯ КНОПОК
     // 
@@ -422,6 +557,22 @@
      * @param {string} letter - буква, которую нажали ('Т', 'Ц' или 'К')
      */
     function pressButton(letter) {
+
+      function pressButton(letter) {
+    // ========== ДОБАВЛЯЕМ БУКВУ В ТАБЛО ==========
+    if (letterSequence.length < MAX_LETTERS) {
+        letterSequence.push(letter);
+        updateScoreboard();
+    } else {
+        // Если достигли максимума, показываем предупреждение
+        tg.showAlert(`Максимум ${MAX_LETTERS} букв! Очистите табло.`);
+        return; // Не продолжаем обработку
+    }
+    
+    // Остальной код функции остаётся прежним...
+    counters[letter]++;
+    // ... и так далее
+
       // 1. УВЕЛИЧИВАЕМ СЧЁТЧИК ДЛЯ ЭТОЙ БУКВЫ
       counters[letter]++;  // counters[letter] = counters[letter] + 1
       // counters['Т']++ увеличивает счётчик для буквы Т на 1
@@ -579,6 +730,17 @@
      * Чтобы данные не пропадали при перезагрузке страницы
      */
     function saveData() {
+
+      function saveData() {
+    const data = {
+        counters: counters,
+        history: history.slice(-10),
+        letterSequence: letterSequence  // Сохраняем текущую последовательность
+    };
+    
+    localStorage.setItem('tck_game_data', JSON.stringify(data));
+}
+
       // 1. СОЗДАЁМ ОБЪЕКТ ДЛЯ СОХРАНЕНИЯ
       const data = {
         counters: counters,  // Текущие счётчики
@@ -638,6 +800,158 @@
      * ⚡ ФУНКЦИЯ ИНИЦИАЛИЗАЦИИ
      * Вызывается, когда вся страница загружена
      */
+
+      /**
+ * 📋 ОБНОВЛЕНИЕ ТАБЛО С БУКВАМИ
+ * Отображает все введённые буквы в красивом формате
+ */
+function updateScoreboard() {
+    const scoreboardElement = document.getElementById('scoreboard-letters');
+    
+    if (letterSequence.length === 0) {
+        // Если букв нет, показываем заглушку
+        scoreboardElement.innerHTML = '<span class="placeholder">Пока нет букв</span>';
+        return;
+    }
+    
+    // Создаём HTML для всех букв
+    let lettersHTML = '';
+    letterSequence.forEach((letter, index) => {
+        // Добавляем класс в зависимости от буквы (t, c, k)
+        const letterClass = letter.toLowerCase();
+        lettersHTML += `<span class="letter-badge ${letterClass}" title="Позиция: ${index + 1}">${letter}</span>`;
+        
+        // Каждые 5 букв добавляем перенос для удобства чтения
+        if ((index + 1) % 5 === 0) {
+            lettersHTML += '<br>';
+        }
+    });
+    
+    scoreboardElement.innerHTML = lettersHTML;
+    
+    // Показываем статистику
+    const stats = `Букв: ${letterSequence.length}/${MAX_LETTERS}`;
+    document.querySelector('.scoreboard-title').innerHTML = `📝 Введённые буквы: <small>${stats}</small>`;
+}
+
+/**
+ * 🗑️ ОЧИСТКА ТАБЛО
+ * Удаляет все буквы из табло
+ */
+function clearScoreboard() {
+    if (letterSequence.length === 0) {
+        tg.showAlert("Табло уже пустое!");
+        return;
+    }
+    
+    tg.showPopup({
+        title: "Очистить табло?",
+        message: `Удалить ${letterSequence.length} букв?`,
+        buttons: [
+            { type: "ok", text: "Да" },
+            { type: "cancel", text: "Нет" }
+        ]
+    }).then((result) => {
+        if (result === "ok") {
+            const deletedCount = letterSequence.length;
+            letterSequence = [];
+            updateScoreboard();
+            addToHistory(`Табло очищено (${deletedCount} букв)`);
+            
+            // Виброотклик
+            if (tg.isVibrationSupported) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        }
+    });
+}
+
+/**
+ * 📋 КОПИРОВАНИЕ ПОСЛЕДОВАТЕЛЬНОСТИ
+ * Копирует все буквы в буфер обмена
+ */
+function copyLetters() {
+    if (letterSequence.length === 0) {
+        tg.showAlert("Нет букв для копирования!");
+        return;
+    }
+    
+    // Преобразуем массив букв в строку
+    const textToCopy = letterSequence.join('');
+    
+    // Используем современный Clipboard API
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            tg.showAlert(`Скопировано: "${textToCopy}"`);
+            addToHistory(`Скопировано: ${textToCopy}`);
+        })
+        .catch(err => {
+            console.error('Ошибка копирования:', err);
+            tg.showAlert("Не удалось скопировать");
+        });
+}
+
+/**
+ * 💾 СОХРАНЕНИЕ ПОСЛЕДОВАТЕЛЬНОСТИ
+ * Сохраняет текущую последовательность
+ */
+function saveSequence() {
+    if (letterSequence.length === 0) {
+        tg.showAlert("Нет букв для сохранения!");
+        return;
+    }
+    
+    const sequenceName = prompt("Название для последовательности:", `Последовательность_${Date.now()}`);
+    
+    if (sequenceName) {
+        const savedSequence = {
+            name: sequenceName,
+            letters: [...letterSequence], // Копия массива
+            date: new Date().toLocaleString(),
+            length: letterSequence.length
+        };
+        
+        // Сохраняем в localStorage
+        let savedSequences = JSON.parse(localStorage.getItem('saved_sequences') || '[]');
+        savedSequences.push(savedSequence);
+        localStorage.setItem('saved_sequences', JSON.stringify(savedSequences));
+        
+        tg.showAlert(`Сохранено: "${sequenceName}" (${letterSequence.length} букв)`);
+        addToHistory(`Сохранена последовательность: ${sequenceName}`);
+    }
+}
+
+/**
+ * 🔢 ПОКАЗАТЬ СТАТИСТИКУ ПОСЛЕДОВАТЕЛЬНОСТИ
+ */
+function showSequenceStats() {
+    if (letterSequence.length === 0) {
+        tg.showAlert("Табло пустое!");
+        return;
+    }
+    
+    const stats = {
+        'Т': letterSequence.filter(l => l === 'Т').length,
+        'Ц': letterSequence.filter(l => l === 'Ц').length,
+        'К': letterSequence.filter(l => l === 'К').length
+    };
+    
+    const statsText = `
+        📊 Статистика последовательности:
+        Всего букв: ${letterSequence.length}
+        Т: ${stats['Т']} (${Math.round(stats['Т']/letterSequence.length*100)}%)
+        Ц: ${stats['Ц']} (${Math.round(stats['Ц']/letterSequence.length*100)}%)
+        К: ${stats['К']} (${Math.round(stats['К']/letterSequence.length*100)}%)
+        Последовательность: ${letterSequence.join(' ')}
+    `;
+    
+    tg.showPopup({
+        title: "📊 Статистика",
+        message: statsText,
+        buttons: [{ type: "ok" }]
+    });
+}   
+
     function initApp() {
       // 1. РАСТЯГИВАЕМ ПРИЛОЖЕНИЕ НА ВЕСЬ ЭКРАН
       tg.expand();
@@ -653,7 +967,30 @@
       
       // 3. ЗАГРУЖАЕМ СОХРАНЁННЫЕ ДАННЫЕ
       loadData();
-      
+      function loadData() {
+    const saved = localStorage.getItem('tck_game_data');
+    
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            
+            counters = data.counters || counters;
+            history = data.history || history;
+            letterSequence = data.letterSequence || letterSequence;  // Загружаем последовательность
+            
+            // Обновляем отображение
+            document.getElementById('counter-t').textContent = counters['Т'];
+            document.getElementById('counter-c').textContent = counters['Ц'];
+            document.getElementById('counter-k').textContent = counters['К'];
+            
+            updateHistory();
+            updateScoreboard();  // Обновляем табло при загрузке
+            
+        } catch (e) {
+            console.log('Ошибка загрузки данных:', e);
+        }
+    }
+}
       // 4. НАСТРАИВАЕМ ИНФОРМАЦИЮ О ПОЛЬЗОВАТЕЛЕ
       if (user) {
         // Если данные пользователя доступны
